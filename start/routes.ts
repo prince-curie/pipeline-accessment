@@ -20,9 +20,13 @@
 
 import Route from '@ioc:Adonis/Core/Route';
 import { schema, rules } from '@ioc:Adonis/Core/Validator';
+import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 
+Route.get('/', () => {
+  return "Welcome to how old."
+});
 
-Route.get('/howold', async ({ request, response }) => {  
+Route.get('/howold', async ({ request, response }:HttpContextContract) => {  
   const currentTime:number = Date.now()
   
   const dob:number = await validateData(request, currentTime);
