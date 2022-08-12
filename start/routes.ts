@@ -44,7 +44,7 @@ Route.get('/howold', async ({ request, response }) => {
       message: "System error."
     });
   }  
-}).middleware('throttle:global')
+}).middleware('limit')
 
 interface IValidate {
   dob:number

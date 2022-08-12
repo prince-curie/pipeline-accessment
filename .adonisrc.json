@@ -13,14 +13,11 @@
   },
   "preloads": [
     "./start/routes",
-    "./start/kernel",
-    "./start/limiter"
+    "./start/kernel"
   ],
   "providers": [
     "./providers/AppProvider",
-    "@adonisjs/core",
-    "@adonisjs/limiter",
-    "@adonisjs/redis"
+    "@adonisjs/core"
   ],
   "metaFiles": [
     {

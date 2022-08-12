@@ -43,5 +43,5 @@ Server.middleware.register([
 */
 
 Server.middleware.registerNamed({
-  throttle: () => import('@adonisjs/limiter/build/throttle'),
+  limit: () => import('App/Middleware/RateLimiter')
 })
