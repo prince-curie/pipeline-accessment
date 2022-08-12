@@ -28,8 +28,6 @@
     "types": [
       "@adonisjs/core",
       "@japa/preset-adonis/build/adonis-typings",
-      "@adonisjs/limiter",
-      "@adonisjs/redis"
     ]
   }
 }
