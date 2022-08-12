@@ -33,7 +33,7 @@ export default class RateLimiter {
         if(currentTime > fileData[userIp].lastRequestTime) {
           fileData = this.reset(fileData, userIp, currentTime);
         }
-        
+
       } else {
         fileData[userIp] = {lastRequestTime: 0, numberOfRequest: 0};
       }
@@ -42,11 +42,11 @@ export default class RateLimiter {
 
       this.setSuccessResponseHeaders(response, fileData[userIp]);
       
+      await next();
     } catch (error) {
       return this.errorResponse(error.message, response);
     }
 
-    await next();
   }
 
   private read = async( response:ResponseContract ):Promise<IFileData> => {
