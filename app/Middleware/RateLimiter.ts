@@ -1,6 +1,6 @@
 import Application from '@ioc:Adonis/Core/Application'
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
-import { existsSync } from 'node:fs';
+import { existsSync, createWriteStream } from 'node:fs';
 import { readFile, writeFile } from 'node:fs/promises';
 import type { ResponseContract } from '@ioc:Adonis/Core/Response';
 
@@ -25,7 +25,7 @@ export default class RateLimiter {
       const currentTime:number = Math.floor(Date.now() / this.timeDuration);
       const userIp:string = request.ip();
       
-      let fileData:IFileData = await this.read(response);
+      let fileData:IFileData = await this.read();
       
       if(fileData[userIp]) {
         this.rateLimit(fileData[userIp], currentTime);
@@ -42,15 +42,19 @@ export default class RateLimiter {
 
       this.setSuccessResponseHeaders(response, fileData[userIp]);
       
-      await next();
     } catch (error) {
       return this.errorResponse(error.message, response);
     }
-
+    
+    await next();
   }
 
-  private read = async( response:ResponseContract ):Promise<IFileData> => {
-    response.abortIf(!existsSync(this.file), 'System error', 500); 
+  private read = async():Promise<IFileData> => {
+    if(!existsSync(this.file)) {
+      const newFile = createWriteStream(this.file);
+      newFile.write('{}');
+      newFile.end();
+    } 
 
     const fileDataAsString:string = await readFile(this.file, 'utf-8')
 
